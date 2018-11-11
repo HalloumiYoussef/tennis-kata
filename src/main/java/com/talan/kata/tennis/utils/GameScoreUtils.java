@@ -8,15 +8,24 @@ import java.util.stream.Stream;
 /**
  * Created by Joseph on 31/07/2018.
  */
-public final class GameScoreUtils {
+public class GameScoreUtils {
+
+    public static final String SEP = " - ";
+
+    private GameScoreUtils() {
+        //Default
+    }
 
     /**
-     * Go to the nex Score
-     * @param gameScore Initial Score
-     * @return Next Score
+     * Get the EnumGameScore by its value
+     * @param gameScore: the value of the game score
+     * @return EnumGameScore
+     * @throws EnumConstantNotPresentException: when the gameScore is unknown
      */
     public static EnumGameScore toEnum(String gameScore) {
-        final Optional<EnumGameScore> enumGameScore = Stream.of(EnumGameScore.values()).filter(gs -> scoresAreEquals(gameScore, gs)).findFirst();
+        final Optional<EnumGameScore> enumGameScore = Stream.of(EnumGameScore.values())
+                                                        .filter(gs -> scoresAreEquals(gameScore, gs))
+                                                        .findFirst();
         if(enumGameScore.isPresent()){
             return enumGameScore.get();
 

@@ -8,9 +8,9 @@ package com.talan.kata.tennis.model;
 public enum EnumGameScore {
 
     ZERO("0"),
-    QUINZE("15"),
-    TRENTE("30"),
-    QUARANTE("40"),
+    FIFTEEN("15"),
+    THIRTY("30"),
+    FORTY("40"),
     ADV("ADV"),
     DEUCE("DEUCE");
 
