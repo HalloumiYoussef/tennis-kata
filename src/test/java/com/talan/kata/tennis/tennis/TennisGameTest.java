@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(JUnitParamsRunner.class)
 public class TennisGameTest {
+
     private Player player1 = new Player("P1");
     private Player player2 = new Player("P2");
     private TennisGame tennisGame;
@@ -22,11 +23,12 @@ public class TennisGameTest {
 
 
     @Test
-    @Parameters({"40, 30, " +
-            "Players: P1 - P2\n" +
-            "Set Score: 0 - 0\n" +
-            "Game Score: 40 - 30"})
-    public void should_display_match_score(String player1Score, String player2Score, String actualScore){
+    @Parameters({
+            "0, 0, Players: P1 - P2\nSet Score: 0 - 0\nGame Score: 0 - 0",
+            "15, 30, Players: P1 - P2\nSet Score: 0 - 0\nGame Score: 15 - 30",
+            "40, 30, Players: P1 - P2\nSet Score: 0 - 0\nGame Score: 40 - 30"
+    })
+    public void should_display_game_score(String player1Score, String player2Score, String actualScore){
         // Given
         player1.setGameScore(GameScoreUtils.toEnum(player1Score));
         player2.setGameScore(GameScoreUtils.toEnum(player2Score));
@@ -37,10 +39,10 @@ public class TennisGameTest {
     }
 
     @Test
-    @Parameters({"15, 40, 3, 4, " +
-            "Players: P1 - P2\n" +
-            "Set Score: 3 - 4\n" +
-            "Game Score: 15 - 40"})
+    @Parameters({
+            "15, 40, 3, 4, Players: P1 - P2\nSet Score: 3 - 4\nGame Score: 15 - 40",
+            "0, 0, 6, 6, Players: P1 - P2\nSet Score: 6 - 6\nGame Score: 0 - 0\nTieBreak Score: 0 - 0"
+    })
     public void should_display_set_and_game_scores(String player1GameScore, String player2GameScore, int player1SetScore, int player2SetScore, String actualScore){
         // Given
         player1.setSetScore(player1SetScore);
@@ -54,10 +56,10 @@ public class TennisGameTest {
     }
 
     @Test
-    @Parameters({"40, ADV, " +
-            "Players: P1 - P2\n" +
-            "Set Score: 0 - 0\n" +
-            "Advantage: P2"})
+    @Parameters({
+            "40, ADV, Players: P1 - P2\nSet Score: 0 - 0\nAdvantage: P2",
+            "ADV, 40, Players: P1 - P2\nSet Score: 0 - 0\nAdvantage: P1"
+    })
     public void should_display_adv_score(String player1Score, String player2Score, String actualScore){
         // Given
         player1.setGameScore(GameScoreUtils.toEnum(player1Score));
@@ -69,10 +71,7 @@ public class TennisGameTest {
     }
 
     @Test
-    @Parameters({"DEUCE, DEUCE, " +
-            "Players: P1 - P2\n" +
-            "Set Score: 0 - 0\n" +
-            "DEUCE Activated"})
+    @Parameters({"DEUCE, DEUCE, Players: P1 - P2\nSet Score: 0 - 0\nDEUCE Activated"})
     public void should_display_deuce_score(String player1Score, String player2Score, String actualScore){
         // Given
         player1.setGameScore(GameScoreUtils.toEnum(player1Score));
@@ -84,21 +83,21 @@ public class TennisGameTest {
     }
 
     @Test
-    @Parameters({"0, 0, 6, 6, " +
-            "Players: P1 - P2\n" +
-            "Set Score: 6 - 6\n" +
-            "Game Score: 0 - 0\n" +
-            "TieBreak Score: 0 - 0"})
-    public void should_display_set_game_tieBreak_scores(String player1GameScore, String player2GameScore, int player1SetScore, int player2SetScore, String actualScore){
+    @Parameters({
+            "0, 0, The winner of the Set is not yet known",
+            "5, 4, The winner of the Set is not yet known",
+            "2, 6, The winner of the Set is P2",
+            "6, 4, The winner of the Set is P1",
+            "7, 5, The winner of the Set is P1",
+            "6, 7, The winner of the Set is P2"
+    })
+    public void should_return_winner(int player1SetScore, int player2SetScore, String actualWinner){
         // Given
         player1.setSetScore(player1SetScore);
-        player1.setGameScore(GameScoreUtils.toEnum(player1GameScore));
         player2.setSetScore(player2SetScore);
-        player2.setGameScore(GameScoreUtils.toEnum(player2GameScore));
         // When
-        String expectedScore = tennisGame.displayScore();
-        System.out.println(expectedScore);
+        String expectedWinner = tennisGame.whoIsTheSetWinner();
         // Then
-        Assertions.assertThat(expectedScore).isEqualTo(actualScore);
+        Assertions.assertThat(expectedWinner).isEqualTo(actualWinner);
     }
 }
